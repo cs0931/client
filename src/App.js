@@ -3,7 +3,6 @@ import { BrowserRouter,Routes, Route, Navigate  } from 'react-router-dom'
 
 import Login from './components/Login'
 import Gallery from './components/Gallery';
-import AdminView  from './components/AdminView';
 import './App.css';
 import userpool from './userpool';
 import UserGallery from './components/UserGallery';
