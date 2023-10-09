@@ -18,37 +18,6 @@ Parameters:
  
 Resources:
 
-  CloudFrontOriginAccessIdentity:
-    Type: 'AWS::CloudFront::CloudFrontOriginAccessIdentity'
-    Properties:
-      CloudFrontOriginAccessIdentityConfig:
-        Comment: 'Origin Access Identity'
-
-  CloudfrontDistribution:
-    Type: "AWS::CloudFront::Distribution"
-    Properties:
-      DistributionConfig:
-        Comment: "Cloudfront distribution for the static website"
-        DefaultRootObject: "index.html"
-        Enabled: true
-        HttpVersion: http2
-        Origins:
-          - Id: s3-website
-            DomainName: !GetAtt S3Bucket.DomainName
-            S3OriginConfig:
-              OriginAccessIdentity: 
-                Fn::Sub: 'origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}'
-        DefaultCacheBehavior:
-          Compress: 'true'
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-          ForwardedValues:
-            QueryString: false
-          TargetOriginId: s3-website
-          ViewerProtocolPolicy : redirect-to-https
-
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -65,8 +34,7 @@ Resources:
             Action: 's3:GetObject'
             Resource:
               - !Sub "arn:aws:s3:::${S3Bucket}/*"
-            Principal:
-              AWS: !Sub "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${CloudFrontOriginAccessIdentity}"
+            
   
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
