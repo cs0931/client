@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react'
+import { BrowserRouter,Routes, Route, Navigate  } from 'react-router-dom'
+
+import Login from './components/Login'
+import Gallery from './components/Gallery';
+import AdminView  from './components/AdminView';
 import './App.css';
+import userpool from './userpool';
+import UserGallery from './components/UserGallery';
+
+
+
 
 function App() {
+
+  useEffect(()=>{
+    let user=userpool.getCurrentUser();
+      if(user){
+        <Navigate to="/adminview" replace />
+      }
+  },[]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+   
+    <BrowserRouter>
+      <Routes>
+       
+        <Route path='/' element={<Login />}/>
+        <Route path='/login' element={<Login />}/>
+        <Route path='/gallery' element={<Gallery/>}/>
+        <Route path='/usergallery' element={<UserGallery/>}/>
+      </Routes>
+    </BrowserRouter>
+
+    
   );
 }
 
