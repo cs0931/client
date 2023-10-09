@@ -7,7 +7,8 @@
    Created from AWS Cognito User Pool
 
 # AWS Architecture
-![AWSArchitecture](https://github.com/cs0931/client/assets/4726719/9690d5ce-2f3f-4694-9b5c-b25d5a7ff3dc)
+![AWSArchitecture](https://github.com/cs0931/client/assets/4726719/3242ba83-5d85-4560-af2e-3f1d840c8718)
+
 
 
 ## Brief explanation of the implementation
