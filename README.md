@@ -1,70 +1,22 @@
-# Getting Started with Create React App
+# Photo Upload App 
+  http://photoapp-host.s3-website-us-west-2.amazonaws.com/
+   ### Users
+             Admin:   johnsphotos@gmail.com
+             Guest:   guestphotos@gmail.com
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+   Created from AWS Cognito User Pool
 
-## Available Scripts
+# AWS Architecture
+![AWSArchitecture](https://github.com/cs0931/client/assets/4726719/9690d5ce-2f3f-4694-9b5c-b25d5a7ff3dc)
 
-In the project directory, you can run:
 
-### `npm start`
+## Brief explanation of the implementation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+React frontend client calls AWS Cognito Service for authentication and authorization based on UserGroup.Authenticated admin account is navigated to the gallery view with upload functionality. 
+After authentication of admin account, 
+1) React client calls API Gateway which communicates with AWS Lambda function getImages which gets all the image objects from AWS S3 bucket and provides with preSigned URLs.
+2) On upload of image[jpeq,jpg,png], React client calls API Gateway which communicates with AWS Lambda function uploadImage which generates a unique identifier for the image and stores it in AWS S3 and Dynamo DB with the same identifier and the attribute isPublic to denote whether the image is displayed public or private.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+After authentication of guest account,
+1) React client calls API Gateway which communicates with AWS Lambda function getGuestImages which calls DynamoDB to query and filter out those photo unique identifiers whose isPublic attribute is false, then it queries the AWS S3 bucket for those unique identifiers and responds with presigned URLs.
+   
